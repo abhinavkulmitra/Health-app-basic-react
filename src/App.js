@@ -5,7 +5,7 @@ import food from "./data/database";
 
 const Header = () => <h2>Health App</h2>; //header arrow-function
 
-const FoodArray = ({ array, foodPillHandler }) =>
+const ListOfFood = ({ array, foodPillHandler, userCalorie }) =>
   array.map(({ name, calories, price }) => (
     <Food
       key={name}
@@ -13,30 +13,47 @@ const FoodArray = ({ array, foodPillHandler }) =>
       fooditemCalories={calories}
       fooditemPrice={price}
       onFoodPillClick={foodPillHandler}
+      totalCalorieIntake={userCalorie}
     />
   ));
-
-const FoodClicked = ({ foodState }) => <h2>{foodState}</h2>;
+const CalorieOutput = ({ calorieState, statement }) => (
+  <div>
+    <h4>{statement}</h4>
+    <h2>{calorieState}</h2>
+  </div>
+);
 
 export default class App extends React.Component {
   state = {
-    foodClicked: "nothing"
+    statement: "",
+    totalCalorie: 0
   };
 
-  clickEventHandler = (name) => (
-    <h1> {this.setState({ foodClicked: name })} </h1>
-  );
+  clickEventHandler = (clickedCalorie) => {
+    return (
+      <h1>
+        {this.setState({
+          totalCalorie: clickedCalorie,
+          statement: "Your total calorie consumption for today is :"
+        })}
+      </h1>
+    );
+  };
 
   render() {
     return (
       <div className="App">
         <Header />
-        <FoodArray array={food} foodPillHandler={this.clickEventHandler} />
-        <FoodClicked foodState={this.state.foodClicked} />
+        <ListOfFood
+          array={food}
+          foodPillHandler={this.clickEventHandler}
+          userCalorie={this.state.totalCalorie}
+        />
+        <CalorieOutput
+          calorieState={this.state.totalCalorie}
+          statement={this.state.statement}
+        />
       </div>
     );
   }
 }
-
-// DONE- create components of everything. clean up everything
-// and use props to make it work
