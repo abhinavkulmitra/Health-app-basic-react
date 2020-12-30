@@ -4,10 +4,32 @@ import food from "./data/database";
 import Food from "./food";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-function Home() {
+// NextBtn for step 2
+
+function NextBtn() {
+  NextPage = () => <div>Hello world !</div>;
+
   return (
     <div>
-      <h2>Home</h2>
+      <Router>
+        <button>
+          <Link to="./step-2">Next</Link>
+        </button>
+
+        <Switch>
+          <Route exact path="./step-2">
+            <NextPage />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
+  );
+}
+
+function TodaysCalorieIntake() {
+  return (
+    <div>
+      <h2>Daily calorie intake calculation</h2>
     </div>
   );
 }
@@ -69,9 +91,10 @@ class PageNav extends React.Component {
 
           <Switch>
             <Route exact path="/">
-              <Home />
+              <TodaysCalorieIntake />
             </Route>
             <Route exact path="/calories">
+              {/* STEP 1 */}
               <ListOfFood
                 array={food}
                 foodPillHandler={this.clickEventHandler}
@@ -81,6 +104,8 @@ class PageNav extends React.Component {
                 calorieState={this.state.totalCalorie}
                 statement={this.state.statement}
               />
+              {/* for next step: STEP 2 */}
+              <NextBtn />
             </Route>
             <Route exact path="/comparison">
               <Comparision />
